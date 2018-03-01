@@ -2,7 +2,7 @@
 
 APP_NAME := util_spi_stress
 
-### Environment constants 
+### Environment constants
 
 LGW_PATH ?= ../libloragw
 ARCH ?=
@@ -30,7 +30,7 @@ LGW_INC += $(LGW_PATH)/inc/loragw_reg.h
 
 ### Linking options
 
-LIBS := -lloragw -lrt -lm
+LIBS := -lloragw -lrt -lm -lmpsse -lftdi1
 
 ### General build targets
 

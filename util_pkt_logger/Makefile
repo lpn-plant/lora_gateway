@@ -2,7 +2,7 @@
 
 APP_NAME := util_pkt_logger
 
-### Environment constants 
+### Environment constants
 
 LGW_PATH ?= ../libloragw
 ARCH ?=
@@ -29,7 +29,7 @@ LGW_INC += $(LGW_PATH)/inc/loragw_hal.h
 
 ### Linking options
 
-LIBS := -lloragw -lrt -lm
+LIBS := -lloragw -lrt -lm -lmpsse -lftdi1
 
 ### General build targets
 
