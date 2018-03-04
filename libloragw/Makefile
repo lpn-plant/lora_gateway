@@ -10,20 +10,21 @@ CROSS_COMPILE ?=
 CC := $(CROSS_COMPILE)gcc
 AR := $(CROSS_COMPILE)ar
 
-CFLAGS := -O2 -Wall -Wextra -std=c99 -Iinc -I.
+CFLAGS := -fPIC -fno-strict-aliasing -O2 -Wall -Wextra -std=c99 -Iinc -I. -DLIBFTDI1=1
 
 OBJDIR = obj
 INCLUDES = $(wildcard inc/*.h)
 
 ### linking options
 
-LIBS ?= -lloragw -lrt -lm -lmpsse -lftdi1
+LIBS ?= -lrt -lm -lmpsse -lftdi1 -lloragw
 
 ### general build targets
 
-all: libloragw.a test_loragw_spi test_loragw_reg test_loragw_hal test_loragw_gps test_loragw_cal
+all: libloragw.so libloragw.a test_loragw_spi test_loragw_reg test_loragw_hal test_loragw_gps test_loragw_cal
 
 clean:
+	rm -f libloragw.so
 	rm -f libloragw.a
 	rm -f test_loragw_*
 	rm -f $(OBJDIR)/*.o
@@ -70,6 +71,11 @@ $(OBJDIR)/loragw_hal.o: src/loragw_hal.c $(INCLUDES) src/arb_fw.var src/agc_fw.v
 
 libloragw.a: $(OBJDIR)/loragw_hal.o $(OBJDIR)/loragw_gps.o $(OBJDIR)/loragw_reg.o $(OBJDIR)/loragw_spi.o $(OBJDIR)/loragw_aux.o $(OBJDIR)/loragw_radio.o $(OBJDIR)/loragw_fpga.o $(OBJDIR)/loragw_lbt.o
 	$(AR) rcs $@ $^
+
+### dynamic library
+
+libloragw.so: $(OBJDIR)/loragw_hal.o $(OBJDIR)/loragw_gps.o $(OBJDIR)/loragw_reg.o $(OBJDIR)/loragw_spi.o $(OBJDIR)/loragw_aux.o $(OBJDIR)/loragw_radio.o $(OBJDIR)/loragw_fpga.o $(OBJDIR)/loragw_lbt.o
+	$(CC) $(CFLAGS) -shared -L. -lmpsse $^ -o $@
 
 ### test programs
 
