@@ -30,7 +30,7 @@ LGW_INC += $(LGW_PATH)/inc/loragw_reg.h
 
 ### Linking options
 
-LIBS := -lloragw -lrt -lm -lmpsse -lftdi1
+LIBS ?= -lloragw -lrt -lm -lmpsse -lftdi1
 
 ### General build targets
 

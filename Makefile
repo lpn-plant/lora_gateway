@@ -3,6 +3,7 @@
 ARCH ?=
 CROSS_COMPILE ?=
 export
+LIBS := -lloragw -lrt -lm -lmpsse -lftdi1
 
 ### general build targets
 
